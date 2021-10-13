@@ -6,6 +6,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SettingsScreen from './screens/SettingsScreen';
 import HelpScreen from './screens/HelpScreen';
 import BiometricsScreen from './screens/BiometricsScreen';
+import AddActivityScreen from './screens/AddActivityScreen';
+import AddFoodItemScreen from './screens/AddFoodItemScreen';
+import GoalScreen from './screens/GoalScreen';
 
 const HomeScreen = ({ navigation }) => {
   const [calories, setCalories] = useState(2000);
@@ -49,22 +52,6 @@ const HomeScreen = ({ navigation }) => {
   );
 }
 
-const AddFoodItemScreen = () => {
-  return(
-  <View style={styles.container}>
-      <Text>AddFoodItem</Text>
-    </View>
-  );
-}
-
-const AddActivityScreen = () => {
-  return(
-  <View style={styles.container}>
-      <Text>AddActivity</Text>
-    </View>
-  );
-}
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -77,6 +64,7 @@ export default function App() {
         <Stack.Screen name="AddActivity" component={AddActivityScreen} options = {{headerShown: false}}/>
         <Stack.Screen name="Help" component={HelpScreen} options = {{headerShown: false}}/>
         <Stack.Screen name="Biometrics" component={BiometricsScreen} options = {{headerShown: false}}/>
+        <Stack.Screen name="Goal" component={GoalScreen} options = {{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

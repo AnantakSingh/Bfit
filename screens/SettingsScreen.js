@@ -23,7 +23,7 @@ export default function SettingsScreen({ navigation }) {
                     <View style={{flex: 1, height: 0.7, backgroundColor: 'white'}} />
                 </View>
 
-                <TouchableHighlight onPress = {() => navigation.navigate('Home')}>
+                <TouchableHighlight onPress = {() => navigation.navigate('Goal')}>
                     <Text style = {styles.buttonText}>UPDATE GOAL</Text>
                 </TouchableHighlight>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>

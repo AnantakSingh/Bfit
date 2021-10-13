@@ -2,24 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, StatusBar, TouchableHighlight } from 'react-native';
 import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, Button } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import SelectPicker from 'react-native-form-select-picker';
 import { useForm, Controller } from "react-hook-form";
 
 export default function BiometricsScreen({ navigation }) {
-    const [height, setHeight] = useState(0);
-    const [weight, setWeight] = useState(0);
-    const [age, setAge] = useState(0);
-    const [sex, setSex] = useState('');
-    const [activity, setActivity] = useState('');
 
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState([
-        {label: 'Male', value: 'male'},
-        {label: 'Female', value: 'female'}
+        {value: '0', label: 'Little to no exercise'},
+        {value: '1', label: 'Exercise less than 3 times a week'},
+        {value: '2', label: 'Exercise 4 to 5 days a week'},
+        {value: '3', label: 'Exercise daily'},
     ]);
+    const options = ["Male", "Female"];
 
     const { handleSubmit, control, formState: { errors } } = useForm();
     const onSubmit = data => {
         console.log(data);
+        alert("Changes saved");
+        navigation.navigate("Home");
     };
     
     console.log('errors', errors);
@@ -77,35 +78,53 @@ export default function BiometricsScreen({ navigation }) {
                     <Controller
                         control={control}
                         render={({field: { onChange, value }}) => (
-                            <DropDownPicker
-                            style={{
-                                backgroundColor: "#211E8C"
-                              }}
-                              containerStyle={{
-                                width: '40%', 
-                            }}
-                            textStyle={{
-                                fontSize: 15, color: 'white'
-                              }}
-                              labelStyle={{
-                                fontWeight: "bold",
-                                backgroundColor: "#211E8C"
-                              }}
-                              zIndex={1000}
-                                open={open}
-                                items={items}
-                                value={value}
-                                setOpen={setOpen}
-                                setValue={onChange}
-                                setItems={setItems}
-                            />
+                            <SelectPicker
+                                style={styles.sexDropdown}
+                                titleText='Select Sex'
+                                onSelectedStyle={{fontSize: 16, color:'white'}}
+			                    onValueChange={(value) => {
+                                    onChange(value);
+                                }}
+                                selected={value}
+                            >
+                            {options.map((val, index) => (
+                                <SelectPicker.Item label={val} value={val} key={index} />
+                            ))}
+                        </SelectPicker>
                         )}
                         name="sex"
                         rules={{ required: true }}
                     />
                 </View>
+                <View style = {[styles.inputItem, {marginTop:20}]}>
+                    <Text style={{fontSize: 20, color: 'white',}}>ACTIVITY LEVEL: </Text>
+                    <Controller
+                        control={control}
+                        render={({field: { onChange, value }}) => (
+                            <DropDownPicker
+                                style={{height: 30, zIndex:-1}}
+                                containerStyle={styles.activityLevelDropdown}
+                                placeholder=''
+                                open={open}
+                                value={value}
+                                items={items}
+                                setOpen={setOpen}
+                                setValue={onChange}
+                                setItems={setItems}
+                                labelProps={{
+                                    numberOfLines: 1
+                                }}
+                                arrowIconContainerStyle={{borderLeftWidth: 1, borderLeftColor: 'black', paddingLeft:3, }}
+                                itemSeparator={true}
+                                listItemContainerStyle={{ height: 60}}
+                            />
+                        )}
+                        name="activity"
+                        rules={{ required: true }}
+                    />   
+                </View>
 
-                <View style = {{marginTop: '10%', width: '50%'}}>
+                <View style = {{marginTop: '10%', width: '50%', zIndex: -1}}>
                     <Button
                         color = '#ec5990'
                         style = {styles.button}
@@ -130,7 +149,6 @@ const styles = StyleSheet.create({
       marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
     inputContainer: {
-        backgroundColor: 'gray',
         flex: 1,
         alignItems: 'center',
         paddingTop: '20%',
@@ -151,17 +169,25 @@ const styles = StyleSheet.create({
         color: 'white',
         width: '40%',
         paddingLeft: 10,
+        fontSize: 16,
     },
     button: {
         marginTop: 40,
         color: 'white',
         height: 40,
-        width: 100
+        width: 100,
+        borderRadius: 10
     },
     sexDropdown: {
         backgroundColor: '#211E8C',
         color: 'white',
         width: '40%',
         paddingLeft: 10,
+        borderRadius: 5,
+    },
+    activityLevelDropdown: {
+        width: '40%',
+        height: '5%',
+        borderRadius: 5,
     }
   });

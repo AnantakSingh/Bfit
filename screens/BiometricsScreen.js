@@ -129,7 +129,7 @@ export default function BiometricsScreen({ navigation }) {
         <SafeAreaView style = {styles.container}>
             <View style = {styles.inputContainer}>
                 <View style = {styles.inputItem}>
-                    <Text style={styles.inputTitle}>HEIGHT: </Text>
+                    <Text style={styles.inputTitle}>HEIGHT (Cm): </Text>
                     <Controller
                         control={control}
                         render={({field: { onChange, value }}) => (
@@ -145,7 +145,7 @@ export default function BiometricsScreen({ navigation }) {
                     />
                 </View>
                 <View style = {styles.inputItem}>
-                    <Text style={styles.inputTitle}>WEIGHT: </Text>
+                    <Text style={styles.inputTitle}>WEIGHT (Kg): </Text>
                     <Controller
                         control={control}
                         render={({field: { onChange, value }}) => (
@@ -161,7 +161,7 @@ export default function BiometricsScreen({ navigation }) {
                     />
                 </View>
                 <View style = {styles.inputItem}>
-                    <Text style={styles.inputTitle}>AGE: </Text>
+                    <Text style={styles.inputTitle}>AGE (Years): </Text>
                     <Controller
                         control={control}
                         render={({field: { onChange, value }}) => (
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
         paddingRight: '15%',
     },
     inputTitle: {
-        fontSize: 30,
+        fontSize: 26,
         color: 'white',
     },
     inputBox: {

@@ -11,7 +11,6 @@ export default function HomeScreen({ route, navigation }) {
       try {
         const value = await AsyncStorage.getItem("calories");
         if(value !== null) {
-          console.log(value)
           setCalories(parseInt(value))
         }
         else {

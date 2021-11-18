@@ -4,7 +4,7 @@ import { SearchBar } from "react-native-elements";
 
 export default function AddFoodItemScreen({ navigation }) {
     const [search, setSearch] = useState('');
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(DATA);
 
     const searchFunction = (text) => {
         const updatedData = DATA.filter((item) => {
@@ -45,7 +45,6 @@ export default function AddFoodItemScreen({ navigation }) {
                 inputStyle={styles.searchInput}
                 value={search}
                 onChangeText={(text) => searchFunction(text)}
-                onClear={() => setData([])}
                 autoCorrect={false}
             />
             <FlatList
@@ -92,5 +91,17 @@ const DATA = [
     { id: '1', title: 'Chapati' },
     { id: '2', title: 'Rice' },
     { id: '3', title: 'Daal' },
-    { id: '4', title: 'Dahi' }
+    { id: '4', title: 'Dahi' },
+    { id: '5', title: 'Chapati' },
+    { id: '6', title: 'Rice' },
+    { id: '7', title: 'Daal' },
+    { id: '8', title: 'Dahi' },
+    { id: '9', title: 'Chapati' },
+    { id: '10', title: 'Rice' },
+    { id: '11', title: 'Daal' },
+    { id: '12', title: 'Dahi' },
+    { id: '13', title: 'Chapati' },
+    { id: '14', title: 'Rice' },
+    { id: '15', title: 'Daal' },
+    { id: '16', title: 'Dahi' }
 ];

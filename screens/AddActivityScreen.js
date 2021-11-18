@@ -4,7 +4,7 @@ import { SearchBar } from "react-native-elements";
 
 export default function AddActivityScreen({ navigation }) {
     const [search, setSearch] = useState('');
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(DATA);
 
     const searchFunction = (text) => {
         const updatedData = DATA.filter((item) => {
@@ -45,7 +45,6 @@ export default function AddActivityScreen({ navigation }) {
                 inputStyle={styles.searchInput}
                 value={search}
                 onChangeText={(text) => searchFunction(text)}
-                onClear={() => setData([])}
                 autoCorrect={false}
             />
             <FlatList
@@ -92,5 +91,17 @@ const DATA = [
     { id: '1', title: 'Running' },
     { id: '2', title: 'Skipping' },
     { id: '3', title: 'Push-ups' },
-    { id: '4', title: 'Pull-ups' }
+    { id: '4', title: 'Pull-ups' },
+    { id: '5', title: 'Running' },
+    { id: '6', title: 'Skipping' },
+    { id: '7', title: 'Push-ups' },
+    { id: '8', title: 'Pull-ups' },
+    { id: '9', title: 'Running' },
+    { id: '10', title: 'Skipping' },
+    { id: '11', title: 'Push-ups' },
+    { id: '12', title: 'Pull-ups' },
+    { id: '13', title: 'Running' },
+    { id: '14', title: 'Skipping' },
+    { id: '15', title: 'Push-ups' },
+    { id: '16', title: 'Pull-ups' },
 ];

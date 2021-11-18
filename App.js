@@ -9,48 +9,8 @@ import BiometricsScreen from './screens/BiometricsScreen';
 import AddActivityScreen from './screens/AddActivityScreen';
 import AddFoodItemScreen from './screens/AddFoodItemScreen';
 import GoalScreen from './screens/GoalScreen';
+import HomeScreen from './screens/HomeScreen';
 
-const HomeScreen = ({ navigation }) => {
-  const [calories, setCalories] = useState(2000);
-  return (
-    <SafeAreaView style={styles.container}>
-      <TouchableHighlight style = {styles.settingsButton} onPress = {() => navigation.navigate('Settings')} underlayColor = {'black'}>
-        <Image source = {require('./assets/settings.png')} style = {styles.settingsIcon}/>
-      </TouchableHighlight>
-      <View style = {styles.calorieDisplay}>
-        <View
-          style = {{
-              marginTop: '5%', 
-              height: '20%', 
-              alignItems: 'center', 
-              justifyContent: 'center'}}
-        >
-        <Text style = {{fontSize: 20, color: 'white'}}>CALORIES AVAILABLE</Text>
-        </View>
-        <View 
-          style = {{
-            backgroundColor: '#242424', 
-            marginTop: '7%', 
-            height: '40%',
-            width: '45%',
-            borderRadius: 42,
-            alignItems: 'center', 
-            justifyContent: 'center'}}
-        >
-          <Text style = {{fontSize: 30, color: 'white'}}>{calories}</Text>
-        </View>
-      </View>
-      <View style = {styles.calorieChange}>
-        <TouchableHighlight style = {styles.calorieChangeButton} onPress = {() => navigation.navigate('AddFoodItem')}>
-          <Text style = {styles.buttonText}>ADD FOOD ITEM</Text>
-        </TouchableHighlight>
-        <TouchableHighlight style = {styles.calorieChangeButton} onPress = {() => navigation.navigate('AddActivity')}>
-          <Text style = {styles.buttonText}>ADD ACTIVITY</Text>
-        </TouchableHighlight>
-      </View>
-    </SafeAreaView>
-  );
-}
 
 const Stack = createNativeStackNavigator();
 

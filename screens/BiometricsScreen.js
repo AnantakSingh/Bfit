@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, Button } from '
 import DropDownPicker from 'react-native-dropdown-picker';
 import SelectPicker from 'react-native-form-select-picker';
 import { useForm, Controller } from "react-hook-form";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function BiometricsScreen({ navigation }) {
 
@@ -17,10 +18,109 @@ export default function BiometricsScreen({ navigation }) {
     const options = ["Male", "Female"];
 
     const { handleSubmit, control, formState: { errors } } = useForm();
+
+
+    const storeBiometrics = async data => {
+        try {
+            await AsyncStorage.setItem("biometrics", JSON.stringify(data));
+            updateCalories();
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    const calculateCalories = (biometrics, goal) => {
+        bmr = 0;
+        cal = 0;
+        const act = parseInt(biometrics.activity);
+
+        if(biometrics.sex === "Male") {
+            bmr = 10 * parseFloat(biometrics.weight) + 6.25 * parseFloat(biometrics.height) - 5 * parseFloat(biometrics.age) + 5;
+        }
+        else {
+            bmr = 10 * parseFloat(biometrics.weight) + 6.25 * parseFloat(biometrics.height) - 5 * parseFloat(biometrics.age) - 161;
+        }
+
+        if(act === 0) {
+            if(goal === 0) {
+                cal = bmr/0.83
+            }
+            else if(goal === 1) {
+                cal = bmr/0.95
+            }
+            else {
+                cal = bmr/1.11
+            }
+        }
+        else if(act === 1) {
+            if(goal === 0) {
+                cal = bmr/0.727
+            }
+            else if(goal === 1) {
+                cal = bmr/0.803
+            }
+            else {
+                cal = bmr/0.896
+            }
+        }
+        else if(act === 2) {
+            if(act === 0) {
+                if(goal === 0) {
+                    cal = bmr/0.628
+                }
+                else if(goal === 1) {
+                    cal = bmr/0.748
+                }
+                else {
+                    cal = bmr/0.829
+                }
+            }
+        }
+        else {
+            if(act === 0) {
+                if(goal === 0) {
+                    cal = bmr/0.645
+                }
+                else if(goal === 1) {
+                    cal = bmr/0.7
+                }
+                else {
+                    cal = bmr/0.77
+                }
+            }
+        }
+
+        return cal
+    }
+    const updateCalories = async () => {
+        try {
+            const valBiometrics = await AsyncStorage.getItem("biometrics")
+            const biometrics = JSON.parse(valBiometrics)
+            console.log(biometrics)
+
+            const valGoal = await AsyncStorage.getItem("goal")
+
+            if(valGoal !== null) {
+                const goal = parseInt(valGoal)
+
+                const cal = calculateCalories(biometrics, goal);
+                await AsyncStorage.setItem("calories", cal.toString())
+                
+                alert("Changes saved");
+                navigation.navigate('Home');
+            }
+            else {
+                navigation.navigate('Goal')
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
     const onSubmit = data => {
-        console.log(data);
-        alert("Changes saved");
-        navigation.navigate("Home");
+        storeBiometrics(data);
     };
     
     console.log('errors', errors);
@@ -37,6 +137,7 @@ export default function BiometricsScreen({ navigation }) {
                             style={styles.inputBox}
                             onChangeText={value => onChange(value)}
                             value={value}
+                            keyboardType="numeric"
                         />
                         )}
                         name="height"
@@ -52,6 +153,7 @@ export default function BiometricsScreen({ navigation }) {
                             style={styles.inputBox}
                             onChangeText={value => onChange(value)}
                             value={value}
+                            keyboardType="numeric"
                         />
                         )}
                         name="weight"
@@ -67,6 +169,7 @@ export default function BiometricsScreen({ navigation }) {
                             style={styles.inputBox}
                             onChangeText={value => onChange(value)}
                             value={value}
+                            keyboardType="numeric"
                         />
                         )}
                         name="age"
@@ -87,7 +190,7 @@ export default function BiometricsScreen({ navigation }) {
                                 }}
                                 selected={value}
                             >
-                            {options.map((val, index) => (
+                            {Object.values(options).map((val, index) => ( 
                                 <SelectPicker.Item label={val} value={val} key={index} />
                             ))}
                         </SelectPicker>

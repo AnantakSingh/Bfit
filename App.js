@@ -10,6 +10,7 @@ import AddActivityScreen from './screens/AddActivityScreen';
 import AddFoodItemScreen from './screens/AddFoodItemScreen';
 import GoalScreen from './screens/GoalScreen';
 import HomeScreen from './screens/HomeScreen';
+import UpdateCaloriesScreen from './screens/UpdateCaloriesScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="Help" component={HelpScreen} options = {{headerShown: false}}/>
         <Stack.Screen name="Biometrics" component={BiometricsScreen} options = {{headerShown: false}}/>
         <Stack.Screen name="Goal" component={GoalScreen} options = {{headerShown: false}}/>
+        <Stack.Screen name="UpdateCalories" component={UpdateCaloriesScreen} options = {{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

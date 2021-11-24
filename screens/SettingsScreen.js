@@ -36,6 +36,7 @@ export default function SettingsScreen({ navigation }) {
                     <View style={{flex: 1, height: 0.8, backgroundColor: 'white'}} />
                 </View>
             </View>
+            <Image source = {require('../assets/logo.png')} style = {styles.logo}/>
         </SafeAreaView>
     );
 };
@@ -64,5 +65,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderBottomColor: 'white',
         backgroundColor: 'red',
-    }
+    },
+    logo: {
+        position: 'absolute',
+        bottom: -80,
+        right: -130,
+        zIndex: 100,
+        height: 200,
+        width: 300,
+      }
   });

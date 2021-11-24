@@ -15,7 +15,7 @@ export default function HelpScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'black',
+      backgroundColor: '#2d3436',
       padding: 10,
       marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },

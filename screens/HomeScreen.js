@@ -4,14 +4,18 @@ import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from "@react-navigation/native";
 
-export default function HomeScreen({ route, navigation }) {
+export default function HomeScreen({ navigation }) {
     const [calories, setCalories] = useState(2000);
 
     const getCalories = async () => {
       try {
-        const value = await AsyncStorage.getItem("calories");
-        if(value !== null) {
-          setCalories(parseInt(value))
+        var value1 = await AsyncStorage.getItem("calories");
+        if(value1 !== null) {
+          var value2 = await AsyncStorage.getItem("consumed");
+          if(value2 === null) {
+            value2 = '0';
+          }
+          setCalories(parseInt(value1) - parseInt(value2));
         }
         else {
           navigation.navigate('Biometrics')
@@ -66,6 +70,7 @@ export default function HomeScreen({ route, navigation }) {
             <Text style = {styles.buttonText}>ADD ACTIVITY</Text>
           </TouchableHighlight>
         </View>
+        <Image source = {require('../assets/logo.png')} style = {styles.logo}/>
       </SafeAreaView>
     );
   }
@@ -106,5 +111,13 @@ export default function HomeScreen({ route, navigation }) {
     buttonText: {
       color: 'white',
       fontSize: 32,
+    },
+    logo: {
+      position: 'absolute',
+      bottom: -80,
+      right: -130,
+      zIndex: 100,
+      height: 200,
+      width: 300,
     }
   });

@@ -5,9 +5,11 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import SelectPicker from 'react-native-form-select-picker';
 import { useForm, Controller } from "react-hook-form";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from "@react-navigation/native";
 
 export default function BiometricsScreen({ navigation }) {
-
+    const [loaded, setLoaded] = useState(false);
+    const [biometrics, setInitBio] = useState({});
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState([
         {value: '0', label: 'Little to no exercise'},
@@ -19,10 +21,30 @@ export default function BiometricsScreen({ navigation }) {
 
     const { handleSubmit, control, formState: { errors } } = useForm();
 
+    const getBiometrics = async () => {
+        const valBiometrics = await AsyncStorage.getItem("biometrics")
+        const biometrics = JSON.parse(valBiometrics)
+        console.log(biometrics)
+        setInitBio(biometrics);
+        setLoaded(true);
+    };
+
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        setLoaded(false);
+    }, []);
+
+    useEffect(() => {
+      if(isFocused){ 
+        getBiometrics();
+      }
+    }, [isFocused]);
 
     const storeBiometrics = async data => {
         try {
             await AsyncStorage.setItem("biometrics", JSON.stringify(data));
+            await AsyncStorage.setItem("consumed", "0");
             updateCalories();
         }
         catch (err) {
@@ -65,29 +87,25 @@ export default function BiometricsScreen({ navigation }) {
             }
         }
         else if(act === 2) {
-            if(act === 0) {
-                if(goal === 0) {
-                    cal = bmr/0.628
-                }
-                else if(goal === 1) {
-                    cal = bmr/0.748
-                }
-                else {
-                    cal = bmr/0.829
-                }
+            if(goal === 0) {
+                cal = bmr/0.628
+            }
+            else if(goal === 1) {
+                cal = bmr/0.748
+            }
+            else {
+                cal = bmr/0.829
             }
         }
         else {
-            if(act === 0) {
-                if(goal === 0) {
-                    cal = bmr/0.645
-                }
-                else if(goal === 1) {
-                    cal = bmr/0.7
-                }
-                else {
+            if(goal === 0) {
+                cal = bmr/0.645
+            }
+            else if(goal === 1) {
+                cal = bmr/0.7
+            }
+            else {
                     cal = bmr/0.77
-                }
             }
         }
 
@@ -127,10 +145,11 @@ export default function BiometricsScreen({ navigation }) {
 
     return(
         <SafeAreaView style = {styles.container}>
-            <View style = {styles.inputContainer}>
+            { loaded === true && <View style = {styles.inputContainer}>
                 <View style = {styles.inputItem}>
                     <Text style={styles.inputTitle}>HEIGHT (Cm): </Text>
                     <Controller
+                        defaultValue={biometrics.height}
                         control={control}
                         render={({field: { onChange, value }}) => (
                         <TextInput
@@ -147,6 +166,7 @@ export default function BiometricsScreen({ navigation }) {
                 <View style = {styles.inputItem}>
                     <Text style={styles.inputTitle}>WEIGHT (Kg): </Text>
                     <Controller
+                        defaultValue={biometrics.weight}
                         control={control}
                         render={({field: { onChange, value }}) => (
                         <TextInput
@@ -163,6 +183,7 @@ export default function BiometricsScreen({ navigation }) {
                 <View style = {styles.inputItem}>
                     <Text style={styles.inputTitle}>AGE (Years): </Text>
                     <Controller
+                        defaultValue={biometrics.age}
                         control={control}
                         render={({field: { onChange, value }}) => (
                         <TextInput
@@ -179,6 +200,7 @@ export default function BiometricsScreen({ navigation }) {
                 <View style = {styles.inputItem}>
                     <Text style={styles.inputTitle}>SEX: </Text>
                     <Controller
+                        defaultValue={biometrics.sex}
                         control={control}
                         render={({field: { onChange, value }}) => (
                             <SelectPicker
@@ -191,7 +213,7 @@ export default function BiometricsScreen({ navigation }) {
                                 selected={value}
                             >
                             {Object.values(options).map((val, index) => ( 
-                                <SelectPicker.Item label={val} value={val} key={index} />
+                                <SelectPicker.Item label={val} value={val}/>
                             ))}
                         </SelectPicker>
                         )}
@@ -202,6 +224,7 @@ export default function BiometricsScreen({ navigation }) {
                 <View style = {[styles.inputItem, {marginTop:20}]}>
                     <Text style={{fontSize: 20, color: 'white',}}>ACTIVITY LEVEL: </Text>
                     <Controller
+                        defaultValue={biometrics.activity}
                         control={control}
                         render={({field: { onChange, value }}) => (
                             <DropDownPicker
@@ -236,10 +259,9 @@ export default function BiometricsScreen({ navigation }) {
                     />
                 </View>
             </View>
+        }
 
-            <View>
-            
-            </View>
+            <Image source = {require('../assets/logo.png')} style = {styles.logo}/>
         </SafeAreaView>
     );
 };
@@ -292,5 +314,13 @@ const styles = StyleSheet.create({
         width: '40%',
         height: '5%',
         borderRadius: 5,
-    }
+    },
+    logo: {
+        position: 'absolute',
+        bottom: -80,
+        right: -130,
+        zIndex: 100,
+        height: 200,
+        width: 300,
+      }
   });

@@ -9,6 +9,7 @@ export default function GoalScreen({ navigation }) {
     const storeGoal = async (message, goal) => {
         try {
             await AsyncStorage.setItem("goal", goal.toString());
+            await AsyncStorage.setItem("consumed", "0");
             updateCalories(message);
         }
         catch (err) {
@@ -51,7 +52,6 @@ export default function GoalScreen({ navigation }) {
             }
         }
         else if(act === 2) {
-            if(act === 0) {
                 if(goal === 0) {
                     cal = bmr/0.628
                 }
@@ -61,10 +61,8 @@ export default function GoalScreen({ navigation }) {
                 else {
                     cal = bmr/0.829
                 }
-            }
         }
         else {
-            if(act === 0) {
                 if(goal === 0) {
                     cal = bmr/0.645
                 }
@@ -74,7 +72,6 @@ export default function GoalScreen({ navigation }) {
                 else {
                     cal = bmr/0.77
                 }
-            }
         }
 
         return cal
@@ -137,6 +134,8 @@ export default function GoalScreen({ navigation }) {
                     <Text style = {styles.buttonText}>LOSE 0.5 KG PER WEEK</Text>
                 </TouchableHighlight>
             </View>
+
+            <Image source = {require('../assets/logo.png')} style = {styles.logo}/>
         </SafeAreaView>
     );
 };
@@ -195,5 +194,13 @@ const styles = StyleSheet.create({
       buttonText: {
         color: 'white',
         fontSize: 18,
+      },
+      logo: {
+        position: 'absolute',
+        bottom: -80,
+        right: -130,
+        zIndex: 100,
+        height: 200,
+        width: 300,
       }
   });

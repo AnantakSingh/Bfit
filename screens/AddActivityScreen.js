@@ -4,29 +4,36 @@ import { SearchBar } from "react-native-elements";
 
 export default function AddActivityScreen({ navigation }) {
     const [search, setSearch] = useState('');
-    const [data, setData] = useState(DATA);
+    const [data, setData] = useState([]);
 
     const searchFunction = (text) => {
-        const updatedData = DATA.filter((item) => {
-          const item_data = `${item.title.toUpperCase()})`;
-          const text_data = text.toUpperCase();
-          return item_data.indexOf(text_data) > -1;
-        });
+        if(text !== '') {
+            fetch(`http://192.168.0.61:3001/search/activity?term=${text}`)
+            .then((res) => res.json())
+            .then((json) => {
+                setData(json);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }
+        else {
+            setData([])
+        }
         setSearch(text);
-        setData(updatedData);
     };
 
-    const onPressItem = (title) => {
-        alert(`Added ${title}`);
+    const onPressItem = (title, units) => {
         setSearch('');
         setData([]);
+        navigation.navigate('UpdateCalories', {title, units, food: false});
     }
-    const renderItem = ({ item }) => <Item title={item.title} />;
-    const Item = ({ title }) => {
+    const renderItem = ({ item }) => <Item title={item.name} units={item.unit} />;
+    const Item = ({ title, units }) => {
         return (
           <View style={styles.item}>
             <TouchableOpacity
-                onPress={() => onPressItem(title)}
+                onPress={() => onPressItem(title, units)}
             >
                 <Text style={styles.itemText}>{title}</Text>
             </TouchableOpacity>
@@ -50,7 +57,7 @@ export default function AddActivityScreen({ navigation }) {
             <FlatList
                 data={data}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item._id}
             />
         </View>
     );
@@ -86,22 +93,3 @@ const styles = StyleSheet.create({
         color: 'white'
     },
   });
-
-const DATA = [
-    { id: '1', title: 'Running' },
-    { id: '2', title: 'Skipping' },
-    { id: '3', title: 'Push-ups' },
-    { id: '4', title: 'Pull-ups' },
-    { id: '5', title: 'Running' },
-    { id: '6', title: 'Skipping' },
-    { id: '7', title: 'Push-ups' },
-    { id: '8', title: 'Pull-ups' },
-    { id: '9', title: 'Running' },
-    { id: '10', title: 'Skipping' },
-    { id: '11', title: 'Push-ups' },
-    { id: '12', title: 'Pull-ups' },
-    { id: '13', title: 'Running' },
-    { id: '14', title: 'Skipping' },
-    { id: '15', title: 'Push-ups' },
-    { id: '16', title: 'Pull-ups' },
-];

@@ -18,7 +18,7 @@ export default function UpdateCaloriesScreen({ route, navigation }) {
             const calPerMin = Object.values(value)[0]
             const scaledCalPerMin = parseFloat(calPerMin)*weight/80;
             setUnit(scaledCalPerMin);
-            setUnitTitle(scaledCalPerMin.toString()+" kcal/min")
+            setUnitTitle(scaledCalPerMin.toFixed(3).toString()+" kcal/min")
         });
     }
 
